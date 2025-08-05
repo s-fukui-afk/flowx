@@ -1,4 +1,4 @@
-''' mermaid
+```mermaid
 
 graph TD
     subgraph "【フェーズ1】ルール判定エンジン"
