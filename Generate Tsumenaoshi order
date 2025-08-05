@@ -1,0 +1,51 @@
+''' mermaid
+
+graph TD
+    subgraph "【フェーズ1】ルール判定エンジン"
+        direction LR
+        AA[Start: 案件データ受信] --> AB{商材, ユーザー, 業種,資本金, アウトレット番号};
+        AB --> R3{Rule3に合致?};
+        R3 -- Yes --> R3_OUT[タスク生成しない<br>処理終了];
+        R3 -- No --> R6{Rule6に合致?};
+        R6 -- Yes --> R_CHECK{"詰め直し<br>条件を判定"};
+        R6 -- No --> R5{Rule5に合致?};
+        R5 -- Yes --> R_CHECK;
+        R5 -- No --> R7{Rule7に合致?};
+        R7 -- Yes --> R_TRIGGER["トリガー特定:<br>無条件で生成"];
+        R7 -- No --> R2{Rule2に合致?};
+        R2 -- Yes --> R_CHECK;
+        R2 -- No --> R1{Rule1<br>(デフォルト)};
+        R1 -- "Hard blocker<br>検出" --> R_CHECK;
+        R1 -- "Hard blocker<br>なし" --> R1_OUT[タスク生成しない<br>処理終了];
+        R_CHECK -- 条件に合致 --> R_TRIGGER["トリガー特定:<br>・検出された減点ラベルID<br>・未検出の加点ラベルID"];
+        R_CHECK -- 条件に合致しない --> R_OUT[タスク生成しない<br>処理終了];
+    end
+
+    subgraph "【フェーズ2】詰め直しタスク生成フロー"
+        direction TB
+        C["ステップ1: ネックの特定と<br>リスク評価"];
+        D["ステップ2: 関連指示の特定と<br>判定理由の整理"];
+        E["ステップ3: 実行プランの生成"];
+        F[Output: 詰め直し指示の生成];
+        G[End];
+
+        C1["1-1: トリガー情報<br>(ネック)を受け取る"]-->C2["1-2: evaluation_masterから<br>リスクを特定"];
+        D1["2-1: instruction_master,<br>strategy_masterを検索"]-->D2["2-2: 最適な指示を選択"];
+        D2 --> D3["2-3: 未解決の根本原因を分析<br>(なぜそのラベルが検出/未検出になったか)"];
+        E1["3-1: 顧客インサイトを整理"]-->E2["3-2: ネックの性質を判断し、<br>アプローチ方針を決定"];
+        E2 --> E3["3-3: 動的トークスクリプトを構築"];
+        E3 --> E4["3-4: 成功/失敗シナリオを生成"];
+
+        C --> D --> E --> F --> G;
+    end
+
+    %% Flow Connection
+    R_TRIGGER --> C1;
+
+    %% Style
+    style AA fill:#f9f,stroke:#333,stroke-width:2px;
+    style R_OUT fill:#f9f,stroke:#333,stroke-width:2px;
+    style R1_OUT fill:#f9f,stroke:#333,stroke-width:2px;
+    style R3_OUT fill:#f9f,stroke:#333,stroke-width:2px;
+    style F fill:#f9f,stroke:#333,stroke-width:2px;
+    style G fill:#f9f,stroke:#333,stroke-width:2px;
