@@ -1,5 +1,6 @@
 ```mermaid
 
+
 graph TD
     subgraph "【フェーズ1】ルール判定エンジン"
         direction LR
@@ -14,7 +15,7 @@ graph TD
         R7 -- Yes --> R_TRIGGER["トリガー特定:<br>無条件で生成"];
         R7 -- No --> R2{Rule2に合致?};
         R2 -- Yes --> R_CHECK;
-        R2 -- No --> R1{Rule1<br>(デフォルト)};
+        R2 -- No --> R1{"Rule1<br>(デフォルト)"};
         R1 -- "Hard blocker<br>検出" --> R_CHECK;
         R1 -- "Hard blocker<br>なし" --> R1_OUT[タスク生成しない<br>処理終了];
         R_CHECK -- 条件に合致 --> R_TRIGGER["トリガー特定:<br>・検出された減点ラベルID<br>・未検出の加点ラベルID"];
