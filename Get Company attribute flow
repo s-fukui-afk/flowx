@@ -1,0 +1,28 @@
+graph TD
+    A[CSV Import] --> B{DBに情報存在？};
+    B -- Yes --> F[処理終了];
+    B -- No --> C[Step 1: 電話番号で一次検索];
+    C --> D{一次検索で運営会社を発見？};
+    D -- Yes --> E[運営会社情報を出力];
+    E --> F;
+    D -- No --> G[店舗名などのキーワードを抽出];
+    G --> H[Step 2: 生成キーワードで二次検索];
+    H --> I{二次検索で運営会社を発見？};
+    I -- Yes --> E;
+    I -- No --> J[「見つかりません」を出力];
+    J --> F;
+
+    subgraph "一次検索プロセス"
+        C
+        D
+    end
+
+    subgraph "二次検索プロセス"
+        G
+        H
+        I
+    end
+
+    style F fill:#d3d3d3,stroke:#333,stroke-width:2px
+    style E fill:#90ee90,stroke:#333,stroke-width:2px
+    style J fill:#ffcccb,stroke:#333,stroke-width:2px
