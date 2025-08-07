@@ -11,8 +11,10 @@ sequenceDiagram
     Operator->>FlowX: 通話終了ボタンをクリック
     FlowX->>AndroidApp: 通話終了指示
     AndroidApp->>Carrier: 通話切断
-    AndroidApp->>CallLogServer: 通話終了ログを送信
-    FlowX->>CallLogServer: 架電結果登録画面を表示
+    Note over AndroidApp: 通話終了を検知
+    AndroidApp->>CallLogServer: 通話終了を通知
+    CallLogServer->>FlowX: 通話終了を通知（リアルタイム同期）
+    FlowX->>Operator: 架電結果登録画面を表示
     
     Note over CallLogServer,Carrier: 別途
     CallLogServer->>Carrier: 通話ファイル取得要求
