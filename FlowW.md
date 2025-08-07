@@ -10,6 +10,7 @@ sequenceDiagram
     FlowX->>AndroidApp: 発信指示 + 通話先情報
     AndroidApp->>Carrier: 発信
     Carrier-->>AndroidApp: 接続確立
-    AndroidApp->>CallLogServer: 通話開始ログを送信
-    CallLogServer-->>FlowX: 通話開始を通知
+    Note over AndroidApp: 通話開始を検知
+    AndroidApp->>CallLogServer: 通話開始を通知
+    CallLogServer->>FlowX: 通話開始を通知（リアルタイム同期）
     Note over AndroidApp,Carrier: 通話開始
